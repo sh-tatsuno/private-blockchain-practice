@@ -18,7 +18,7 @@ class Block {
 	constructor(data){
 		this.hash = null;                                           // Hash of the block
 		this.height = 0;                                            // Block Height (consecutive number of each block)
-		this.body = Buffer.from(JSON.stringify(data)).toString('hex');   // Will contain the transactions stored in the block, by default it will encode the data
+		this.body = Buffer.from(JSON.stringify(data)).toString('hex');   // Will contain the transactions stored in the block, by default it will encode the data: encoded to hex
 		this.time = 0;                                              // Timestamp for the Block creation
 		this.previousBlockHash = null;                              // Reference to the previous Block Hash
     }
@@ -39,13 +39,16 @@ class Block {
         let self = this;
         return new Promise((resolve, reject) => {
             // Save in auxiliary variable the current block hash
-                                            
+            const current_hash = self.hash
             // Recalculate the hash of the Block
+            self.hash = SHA256(this.body)
             // Comparing if the hashes changed
-            // Returning the Block is not valid
-            
+            if (current_hash === self.hash) {
+                // Returning the Block is not valid
+                resolve(true)
+            }
             // Returning the Block is valid
-
+            resolve(false)
         });
     }
 
@@ -60,13 +63,16 @@ class Block {
      */
     getBData() {
         // Getting the encoded data saved in the Block
+        const encoded_data = this.body
         // Decoding the data to retrieve the JSON representation of the object
+        const decoded_data = hex2ascii(encoded_data)
         // Parse the data to an object to be retrieve.
-
+        const parsed_data = JSON.parse(decoded_data)
         // Resolve with the data if the object isn't the Genesis block
-
+        if (this.previousBlockHash != null) { // genesis block
+            return parsed_data
+        }
     }
-
 }
 
 module.exports.Block = Block;                    // Exposing the Block class as a module

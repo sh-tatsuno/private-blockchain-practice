@@ -39,16 +39,17 @@ class BlockchainController {
     // Endpoint that allows user to request Ownership of a Wallet address (POST Endpoint)
     requestOwnership() {
         this.app.post("/requestValidation", async (req, res) => {
+            console.log(req)
             if(req.body.address) {
-                const address = req.body.address;
-                const message = await this.blockchain.requestMessageOwnershipVerification(address);
+                const address = req.body.address
+                const message = await this.blockchain.requestMessageOwnershipVerification(address)
                 if(message){
                     return res.status(200).json(message);
                 } else {
-                    return res.status(500).send("An error happened!");
+                    return res.status(500).send("An error happened!")
                 }
             } else {
-                return res.status(500).send("Check the Body Parameter!");
+                return res.status(500).send("Check the Body Parameter!")
             }
         });
     }
