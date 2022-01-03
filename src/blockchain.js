@@ -64,6 +64,11 @@ class Blockchain {
     _addBlock(block) {
         let self = this;
         return new Promise(async (resolve, reject) => {
+            let errorLog = await self.validateChain()
+            if (errorLog.length > 0) {
+                console.log(errorLog)
+                reject(Error("error"))
+            }
             block.time = new Date().getTime().toString().slice(0,-3)
             self.height++
             block.height = self.height
