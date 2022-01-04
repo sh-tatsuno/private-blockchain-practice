@@ -6,6 +6,7 @@
  * - `morgan` Isn't required but help with debugging and logging
  * - `body-parser` This module allows to parse the body of the post request into a JSON
  */
+const log = require('debug')('http')
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
@@ -48,7 +49,7 @@ class ApplicationServer {
 	start() {
 		let self = this;
 		this.app.listen(this.app.get("port"), () => {
-			console.log(`Server Listening for port: ${self.app.get("port")}`);
+			log(`Server Listening for port: ${self.app.get("port")}`);
 		});
 	}
 
