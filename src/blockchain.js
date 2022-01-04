@@ -8,9 +8,9 @@
  *  
  */
 
-const SHA256 = require('crypto-js/sha256');
-const BlockClass = require('./block.js');
-const bitcoinMessage = require('bitcoinjs-message');
+const SHA256 = require('crypto-js/sha256')
+const BlockClass = require('./block.js')
+const bitcoinMessage = require('bitcoinjs-message')
 
 class Blockchain {
 
@@ -122,8 +122,10 @@ class Blockchain {
                 if (bitcoinMessage.verify(message, address, signature)) {
                     let block = new BlockClass.Block({ address, message, signature, star })
                     block = self._addBlock(block)
-                    resolve(block)
+                    return resolve(block)
                 }
+            } else {
+                reject("Time out")
             }
         });
     }
